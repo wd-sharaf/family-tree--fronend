@@ -1,11 +1,11 @@
-import { useState, FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import apiClient from "../api/client";
 import { Gender, type CreatePersonRequest } from "../types";
 
 export default function PersonFormPage() {
   const navigate = useNavigate();
-  const { id } = useParams(); // موجود لو Edit، مش موجود لو Add جديد
+  const { id } = useParams(); 
 
   const [form, setForm] = useState<CreatePersonRequest>({
     firstName: "",

@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { registerUser } from "../api/client";
 
@@ -15,7 +15,7 @@ export default function RegisterForm() {
     setError(null);
     setLoading(true);
     try {
-      await registerUser({ name, email, password });
+      await registerUser({ full_name: name, email, password });
       navigate("/login");
     } catch (err: any) {
       setError(err?.response?.data?.message || "حدث خطأ أثناء إنشاء الحساب، حاول مرة أخرى");

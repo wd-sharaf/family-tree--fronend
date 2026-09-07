@@ -1,8 +1,11 @@
-export enum Gender {
-  MALE = "MALE",
-  FEMALE = "FEMALE",
-  UNKNOWN = "UNKNOWN",
-}
+export const Gender = {
+  MALE: "male",
+  FEMALE: "female",
+  OTHER: "other",
+  UNKNOWN: "unknown",
+} as const;
+
+export type Gender = (typeof Gender)[keyof typeof Gender];
 
 export interface User {
   id: string;
