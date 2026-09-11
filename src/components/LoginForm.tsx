@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import AuthLayout from "./AuthLayout";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -18,50 +19,46 @@ export default function LoginForm() {
       await login({ email, password });
       navigate("/");
     } catch (err) {
-      setError("Email أو Password غلط، حاول تاني");
+      setError("البريد الإلكتروني أو كلمة المرور غير صحيحة");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: 360, margin: "80px auto" }}>
-      <h2 style={{ textAlign: "center" }}>تسجيل الدخول</h2>
+    <AuthLayout title="تسجيل الدخول">
+      <form onSubmit={handleSubmit}>
+        <div className="field">
+          <label>البريد الإلكتروني</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
 
-      <div style={{ marginBottom: 12 }}>
-        <label>Email</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={{ width: "100%", padding: 8 }}
-        />
-      </div>
+        <div className="field">
+          <label>كلمة المرور</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
 
-      <div style={{ marginBottom: 12 }}>
-        <label>Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={{ width: "100%", padding: 8 }}
-        />
-      </div>
+        {error && <p className="error-text">{error}</p>}
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        <button type="submit" disabled={loading} className="btn btn-primary" style={{ width: "100%" }}>
+          {loading ? "جاري الدخول..." : "دخول"}
+        </button>
 
-      <button type="submit" disabled={loading} style={{ width: "100%", padding: 10 }}>
-        {loading ? "بيدخل..." : "دخول"}
-      </button>
-
-      <p style={{ marginTop: 16, textAlign: "center" }}>
-        ليس لديك حساب؟{" "}
-        <Link to="/register" style={{ color: "#007bff", textDecoration: "underline" }}>
-          تسجيل حساب جديد
-        </Link>
-      </p>
-    </form>
+        <p className="helper-link" style={{ marginTop: 20 }}>
+          ليس لديك حساب؟{" "}
+          <Link to="/register">تسجيل حساب جديد</Link>
+        </p>
+      </form>
+    </AuthLayout>
   );
 }

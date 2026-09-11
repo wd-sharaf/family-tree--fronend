@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { registerUser } from "../api/client";
+import AuthLayout from "./AuthLayout";
 
 export default function RegisterForm() {
   const [name, setName] = useState("");
@@ -25,54 +26,49 @@ export default function RegisterForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: 360, margin: "80px auto" }}>
-      <h2 style={{ textAlign: "center" }}>إنشاء حساب جديد</h2>
+    <AuthLayout title="إنشاء حساب جديد">
+      <form onSubmit={handleSubmit}>
+        <div className="field">
+          <label>الاسم</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
 
-      <div style={{ marginBottom: 12 }}>
-        <label>الاسم (Name)</label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          style={{ width: "100%", padding: 8 }}
-        />
-      </div>
+        <div className="field">
+          <label>البريد الإلكتروني</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
 
-      <div style={{ marginBottom: 12 }}>
-        <label>البريد الإلكتروني (Email)</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={{ width: "100%", padding: 8 }}
-        />
-      </div>
+        <div className="field">
+          <label>كلمة المرور</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
 
-      <div style={{ marginBottom: 12 }}>
-        <label>كلمة المرور (Password)</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={{ width: "100%", padding: 8 }}
-        />
-      </div>
+        {error && <p className="error-text">{error}</p>}
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        <button type="submit" disabled={loading} className="btn btn-primary" style={{ width: "100%" }}>
+          {loading ? "جاري إنشاء الحساب..." : "إنشاء حساب"}
+        </button>
 
-      <button type="submit" disabled={loading} style={{ width: "100%", padding: 10 }}>
-        {loading ? "جاري إنشاء الحساب..." : "إنشاء حساب"}
-      </button>
-
-      <p style={{ marginTop: 16, textAlign: "center" }}>
-        لديك حساب بالفعل؟{" "}
-        <Link to="/login" style={{ color: "#007bff", textDecoration: "underline" }}>
-          تسجيل الدخول
-        </Link>
-      </p>
-    </form>
+        <p className="helper-link" style={{ marginTop: 20 }}>
+          لديك حساب بالفعل؟{" "}
+          <Link to="/login">تسجيل الدخول</Link>
+        </p>
+      </form>
+    </AuthLayout>
   );
 }
